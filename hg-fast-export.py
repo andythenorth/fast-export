@@ -275,6 +275,10 @@ def export_commit(ui,repo,revision,old_marks,max,count,authors,
     author = commit_data['author']
     desc = commit_data['desc']
 
+  if b'\x00' in desc:
+    sys.stderr.write('Fixing "' + desc)
+    desc = ''.join(desc.split(b'\x00'))
+
   if len(parents)==0 and revision != 0:
     wr('reset refs/heads/%s' % branch)
 
